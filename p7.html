@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autocomplete Search Feature</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .search-container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .suggestions {
+            border: 1px solid #ccc;
+            border-top: none;
+            background-color: white;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .suggestions li {
+            padding: 10px;
+            list-style: none;
+            cursor: pointer;
+        }
+        .suggestions li:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="search-container">
+        <h1>City Search</h1>
+        <input type="text" id="city-search" placeholder="Start typing a city name..." />
+        <ul class="suggestions" id="suggestions-list"></ul>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#city-search').on('input', function() {
+                let query = $(this).val().trim();
+
+                if (query.length > 2) { // Trigger search only if input length is > 2
+                    $.ajax({
+                        url: `https://api.openweathermap.org/geo/1.0/direct?q=${query}&limit=5&appid=87256464daf01bb11d52bb4071926a42`, // Replace YOUR_API_KEY with your actual API key
+                        type: 'GET',
+                        success: function(data) {
+                            displaySuggestions(data);
+                        },
+                        error: function(error) {
+                            console.error("Error fetching data", error);
+                        }
+                    });
+                } else {
+                    $('#suggestions-list').empty(); // Clear suggestions if input is less than 3 characters
+                }
+            });
+
+            function displaySuggestions(suggestions) {
+                let suggestionList = $('#suggestions-list');
+                suggestionList.empty(); // Clear existing suggestions
+                
+                if (suggestions.length === 0) {
+                    suggestionList.append('<li>No results found</li>');
+                    return;
+                }
+
+                suggestions.forEach(function(suggestion) {
+                    let cityName = `${suggestion.name}, ${suggestion.country}`;
+                    suggestionList.append(`<li>${cityName}</li>`);
+                });
+
+                // Click event for selecting a suggestion
+                $('.suggestions li').on('click', function() {
+                    $('#city-search').val($(this).text());
+                    suggestionList.empty(); // Clear suggestions after selection
+                });
+            }
+        });
+    </script>
+</body>
+</html>

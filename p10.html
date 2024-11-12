@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        #weather-app {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #weather-data {
+            margin-top: 20px;
+        }
+
+        #weather-data img {
+            width: 80px;
+            height: 80px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="weather-app">
+        <h1>Weather App</h1>
+        <input type="text" id="city-input" placeholder="Enter city name" />
+        <button id="get-weather-btn">Get Weather</button>
+        <div id="weather-data" class="hidden">
+            <img id="weather-icon" src="" alt="Weather Icon">
+            <h2 id="temperature"></h2>
+            <p id="description"></p>
+        </div>
+        <p id="error-message" class="hidden error"></p>
+    </div>
+
+    <script>
+        document.getElementById('get-weather-btn').addEventListener('click', function() {
+            const city = document.getElementById('city-input').value;
+            const apiKey = '87256464daf01bb11d52bb4071926a42'; // Replace with your OpenWeatherMap API key
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+            // AJAX request to fetch weather data
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', apiUrl, true);
+            xhr.onload = function() {
+                if (this.status === 200) {
+                    const response = JSON.parse(this.responseText);
+
+                    // Extract relevant data
+                    const temp = response.main.temp;
+                    const description = response.weather[0].description;
+                    const icon = response.weather[0].icon;
+
+                    // Update the UI with weather data
+                    document.getElementById('temperature').textContent = `${temp} °C`;
+                    document.getElementById('description').textContent = description;
+                    document.getElementById('weather-icon').src = `http://openweathermap.org/img/w/${icon}.png`;
+                    
+                    // Show the weather data and hide any previous error
+                    document.getElementById('weather-data').classList.remove('hidden');
+                    document.getElementById('error-message').classList.add('hidden');
+                } else {
+                    // Show error message if city not found or API error
+                    document.getElementById('error-message').textContent = 'City not found. Please try again.';
+                    document.getElementById('error-message').classList.remove('hidden');
+                    document.getElementById('weather-data').classList.add('hidden');
+                }
+            };
+            xhr.onerror = function() {
+                // Handle network error
+                document.getElementById('error-message').textContent = 'Unable to retrieve weather data. Please check your network.';
+                document.getElementById('error-message').classList.remove('hidden');
+                document.getElementById('weather-data').classList.add('hidden');
+            };
+
+            xhr.send();
+        });
+    </script>
+
+</body>
+</html>

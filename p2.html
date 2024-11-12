@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select State and City</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        select {
+            width: 250px;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        option {
+            padding: 10px;
+        }
+
+        @media (max-width: 400px) {
+            select {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Select State:</h2>
+    <select id="state">
+        <option value="">Select a state</option>
+        <option value="maharashtra">Maharashtra</option>
+        <option value="karnataka">Karnataka</option>
+        <option value="tamilnadu">Tamil Nadu</option>
+        <option value="uttarpradesh">Uttar Pradesh</option>
+        <option value="westbengal">West Bengal</option>
+    </select>
+    <br>
+
+    <h2>City:</h2>
+    <select id="city">
+        <option value="">Select a city</option>
+    </select>
+
+    <script>
+        const stateCities = {
+            maharashtra: ["Mumbai", "Pune", "Nagpur"],
+            karnataka: ["Bengaluru", "Mysore", "Mangalore"],
+            tamilnadu: ["Chennai", "Coimbatore", "Madurai"],
+            uttarpradesh: ["Lucknow", "Kanpur", "Varanasi"],
+            westbengal: ["Kolkata", "Darjeeling", "Howrah"]
+        };
+
+        const stateDropdown = document.getElementById("state");
+        const cityDropdown = document.getElementById("city");
+
+        stateDropdown.addEventListener('change', function() {
+            const selectedState = this.value;
+
+            cityDropdown.innerHTML = '<option value="">Select a city</option>';
+
+            if (selectedState && stateCities[selectedState]) {
+                stateCities[selectedState].forEach(function(city) {
+                    const option = document.createElement('option');
+                    option.value = city.toLowerCase().replace(/ /g, '-');
+                    option.text = city;
+                    cityDropdown.appendChild(option);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

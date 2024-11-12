@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather Information</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        text-align: center;
+        padding: 20px;
+      }
+      
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
+      h1 {
+        font-size: 24px;
+        color: #333;
+      }
+      
+      select {
+        padding: 10px;
+        width: 80%;
+        margin: 10px 0;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+      }
+      
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      
+      button:hover {
+        background-color: #0056b3;
+      }
+      
+      .weather-info {
+        margin-top: 20px;
+      }
+      
+      .weather-info h2 {
+        font-size: 20px;
+        color: #333;
+      }
+      
+      .weather-info p {
+        font-size: 16px;
+        color: #555;
+      }
+      
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weather Information</h1>
+    <!-- Dropdown for city selection -->
+    <select id="city">
+      <option value="" disabled selected>Select a city</option>
+      <option value="Surat">Surat</option>
+      <option value="Bardoli">Bardoli</option>
+      <option value="Ahmedabad">Ahmedabad</option>
+      <option value="Gandhinagar">Gandhinagar</option>
+      <option value="Mumbai">Mumbai</option>
+      <option value="London">London</option>
+      <option value="New York">New York</option>
+      <option value="Tokyo">Tokyo</option>
+      <option value="Paris">Paris</option>
+      <option value="Berlin">Berlin</option>
+      <option value="Sydney">Sydney</option>
+    </select>
+    
+    <button id="getWeather">Get Weather</button>
+    
+    <div id="weather-info" class="weather-info">
+      <!-- Weather data will be displayed here -->
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('getWeather').addEventListener('click', function() {
+        const city = document.getElementById('city').value;
+        if (!city) {
+          document.getElementById('weather-info').innerHTML = `<p>Please select a city from the dropdown!</p>`;
+          return;
+        }
+
+        const apiKey = '87256464daf01bb11d52bb4071926a42'; // Replace with your OpenWeatherMap API key
+        const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+      
+        // Fetch weather data
+        fetch(apiUrl)
+          .then(response => response.json())
+          .then(datas => {
+            displayWeather(datas);
+          })
+          .catch(error => {
+            document.getElementById('weather-info').innerHTML = `<p>Error: ${error.message}</p>`;
+          });
+      });
+      
+      // Function to display weather data
+      function displayWeather(data) {
+        if (data.cod === '404') {
+          document.getElementById('weather-info').innerHTML = `<p>City not found!</p>`;
+          return;
+        }
+      
+        const weatherInfo = `
+          <h2>${data.name}, ${data.sys.country}</h2>
+          <p>Temperature: ${data.main.temp}°C</p>
+          <p>Weather: ${data.weather[0].description}</p>
+          <p>Humidity: ${data.main.humidity}%</p>
+          <p>Wind Speed: ${data.wind.speed} m/s</p>
+        `;
+      
+        document.getElementById('weather-info').innerHTML = weatherInfo;
+      }
+  </script>
+</body>
+</html>

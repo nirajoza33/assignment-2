@@ -1,0 +1,175 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider </title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        *{
+            background-color: black;
+        }
+        /* Basic styles for the slider */
+        .slider-container {
+            width: 450px;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider img {
+            width: 450px;
+            height: 300px;
+        }
+
+        /* Next and Previous buttons */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 255, 187, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        #prevBtn {
+            left: 10px;
+        }
+
+        #nextBtn {
+            right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider" id="slider">
+            <img src="https://cdn.britannica.com/48/252748-050-C514EFDB/Virat-Kohli-India-celebrates-50th-century-Cricket-November-15-2023.jpg" alt="Image 1">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU5DQXZPF5IO9ty6XDcY1SM7Y1MGXzrzI8qQ&s" alt="Image 2">
+            <img src="https://static.cricbuzz.com/a/img/v1/1080x608/i1/c509868/virat-kohli-and-rohit-sharma-signed-off-in-style.jpg" alt="Image 3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy3LXh1JyoHwR7_6g-OEVtpEG01Ad38YOItA&s" alt="Image 4">
+        </div>
+
+        <button class="slider-btn" id="prevBtn">Previous</button>
+        <button class="slider-btn" id="nextBtn">Next</button>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            let currentIndex = 0;
+            const images = $('#slider img').length;
+            const imageWidth = $('#slider img').width();
+            const slider = $('#slider');
+
+            function updateSlider(){
+                slider.css('transform',`translateX(${-currentIndex*imageWidth}px)`);
+            }
+
+            $('#nextBtn').click(function(){
+                currentIndex = (currentIndex+1)%images;
+                updateSlider();
+            });
+
+            $('#prevBtn').click(function(){
+                currentIndex = (currentIndex-1+images)%images;
+                updateSlider();
+            });
+        });
+    </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Slider</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* styles.css */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .slider-container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .slider {
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .slider img {
+            max-width: 50%;
+            height: auto;
+            display: none;
+        }
+        .navigation {
+            margin-top: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <div class="slider">
+            <img src="https://cdn.britannica.com/48/252748-050-C514EFDB/Virat-Kohli-India-celebrates-50th-century-Cricket-November-15-2023.jpg" alt="Image 1">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU5DQXZPF5IO9ty6XDcY1SM7Y1MGXzrzI8qQ&s" alt="Image 2">
+            <img src="https://static.cricbuzz.com/a/img/v1/1080x608/i1/c509868/virat-kohli-and-rohit-sharma-signed-off-in-style.jpg" alt="Image 3">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQy3LXh1JyoHwR7_6g-OEVtpEG01Ad38YOItA&s" alt="Image 4">
+            <!-- Add more images as needed -->
+        </div>
+        <div class="navigation">
+            <button id="prevBtn">Previous</button>
+            <button id="nextBtn">Next</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var currentIndex = 0;
+            var slides = $('.slider img');
+            var totalSlides = slides.length;
+            // Show the initial image
+            showSlide(currentIndex);
+            // Handle "Next" button click
+            $('#nextBtn').click(function () {
+                currentIndex = (currentIndex + 1) % totalSlides;
+                showSlide(currentIndex);
+            });
+            // Handle "Previous" button click
+            $('#prevBtn').click(function () {
+                currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+                showSlide(currentIndex);
+            });
+            // Function to show the current slide
+            function showSlide(index) {
+                slides.hide();
+                slides.eq(index).show();
+            }
+        });
+    </script>
+</body>
+</html>
